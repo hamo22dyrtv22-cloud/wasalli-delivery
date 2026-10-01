@@ -250,4 +250,1168 @@ th{
  font-size:10px
 }
 
-.badge-new{background:#
+.badge-new{background:#fff3d8;color:#a66a00}
+.badge-road{background:#e1f5f5;color:#168887}
+.badge-done{background:#e1f6eb;color:#18774d}
+.badge-off{background:#eee;color:#777}
+
+.courier,.shop-row,.activity{
+ display:flex;
+ justify-content:space-between;
+ align-items:center;
+ padding:12px 0;
+ border-bottom:1px solid var(--border)
+}
+
+.courier:last-child,.shop-row:last-child,.activity:last-child{
+ border-bottom:0
+}
+
+.person{
+ display:flex;
+ align-items:center;
+ gap:10px
+}
+
+.person-avatar{
+ width:40px;height:40px;
+ border-radius:12px;
+ background:var(--purple-light);
+ color:var(--purple);
+ display:flex;
+ align-items:center;
+ justify-content:center;
+ font-weight:bold
+}
+
+.person h4{font-size:13px;margin-bottom:4px}
+.person p{font-size:10px;color:var(--muted)}
+
+.form-grid{
+ display:grid;
+ grid-template-columns:repeat(2,1fr);
+ gap:14px
+}
+
+.field label{
+ display:block;
+ font-size:12px;
+ margin-bottom:6px;
+ font-weight:bold
+}
+
+.field input,.field select{
+ width:100%;
+ padding:12px;
+ border:1px solid var(--border);
+ border-radius:10px;
+ outline:none;
+ background:#fff
+}
+
+.field input:focus,.field select:focus{
+ border-color:var(--purple)
+}
+
+.form-actions{
+ display:flex;
+ gap:8px;
+ margin-top:16px
+}
+
+.search{
+ width:100%;
+ padding:11px 13px;
+ border:1px solid var(--border);
+ border-radius:10px;
+ margin-bottom:15px;
+ outline:none
+}
+
+.map{
+ height:350px;
+ border-radius:15px;
+ background:
+ linear-gradient(45deg,#e9e6ed 25%,transparent 25%),
+ linear-gradient(-45deg,#e9e6ed 25%,transparent 25%),
+ linear-gradient(45deg,transparent 75%,#e9e6ed 75%),
+ linear-gradient(-45deg,transparent 75%,#e9e6ed 75%);
+ background-size:42px 42px;
+ background-position:0 0,0 21px,21px -21px,-21px 0;
+ position:relative;
+ overflow:hidden
+}
+
+.map-title{
+ position:absolute;
+ left:50%;
+ top:50%;
+ transform:translate(-50%,-50%);
+ color:#aaa;
+ font-weight:bold
+}
+
+.pin{
+ position:absolute;
+ font-size:27px
+}
+
+.pin.a{right:25%;top:25%}
+.pin.b{right:52%;top:55%}
+.pin.c{right:70%;top:38%}
+
+.empty{
+ text-align:center;
+ padding:35px;
+ color:var(--muted);
+ font-size:13px
+}
+
+.modal{
+ position:fixed;
+ inset:0;
+ background:#0007;
+ display:none;
+ align-items:center;
+ justify-content:center;
+ z-index:100
+}
+
+.modal.show{display:flex}
+
+.modal-box{
+ width:min(600px,92%);
+ background:#fff;
+ border-radius:20px;
+ padding:22px
+}
+
+.modal-head{
+ display:flex;
+ justify-content:space-between;
+ align-items:center;
+ margin-bottom:18px
+}
+
+.close{
+ border:0;
+ background:#eee;
+ width:32px;height:32px;
+ border-radius:50%;
+ cursor:pointer
+}
+
+.notice{
+ padding:13px;
+ border-radius:11px;
+ background:var(--purple-light);
+ color:var(--purple);
+ font-size:12px;
+ margin-bottom:15px
+}
+
+@media(max-width:900px){
+ .sidebar{
+  width:72px;
+  padding:20px 8px
+ }
+ .logo-name,.logo-subtitle,.menu-title,
+ .menu-item span:not(.menu-icon){display:none}
+ .logo-symbol{width:50px;height:50px}
+ .menu-item{justify-content:center}
+ .main{
+  width:calc(100% - 72px);
+  margin-right:72px;
+  padding:17px
+ }
+ .stats{grid-template-columns:repeat(2,1fr)}
+ .grid{grid-template-columns:1fr}
+}
+
+@media(max-width:600px){
+ .topbar{align-items:flex-start}
+ .admin-profile div:not(.avatar){display:none}
+ .welcome h1{font-size:20px}
+ .stats{gap:9px}
+ .stat-card{padding:14px}
+ .stat-card h3{font-size:22px}
+ .form-grid{grid-template-columns:1fr}
+ .card{padding:15px}
+}
+</style>
+</head>
+
+<body>
+
+<div class="app">
+
+<aside class="sidebar">
+
+<div class="logo">
+ <div class="logo-symbol">و</div>
+ <div class="logo-name">وصل<span>ّ</span>ي</div>
+ <div class="logo-subtitle">لخدمات التوصيل</div>
+</div>
+
+<div class="menu-title">الرئيسية</div>
+
+<div class="menu-item active" onclick="showPage('dashboard',this)">
+ <span class="menu-icon">🏠</span><span>لوحة التحكم</span>
+</div>
+
+<div class="menu-item" onclick="showPage('orders',this)">
+ <span class="menu-icon">📦</span><span>الطلبات</span>
+</div>
+
+<div class="menu-item" onclick="showPage('shops',this)">
+ <span class="menu-icon">🏪</span><span>المحلات</span>
+</div>
+
+<div class="menu-item" onclick="showPage('couriers',this)">
+ <span class="menu-icon">🛵</span><span>المندوبون</span>
+</div>
+
+<div class="menu-item" onclick="showPage('map',this)">
+ <span class="menu-icon">🗺️</span><span>الخريطة</span>
+</div>
+
+<div class="menu-title">الإدارة</div>
+
+<div class="menu-item" onclick="showPage('accounts',this)">
+ <span class="menu-icon">💰</span><span>الحسابات</span>
+</div>
+
+<div class="menu-item" onclick="showPage('reports',this)">
+ <span class="menu-icon">📊</span><span>التقارير</span>
+</div>
+
+<div class="menu-item" onclick="showPage('settings',this)">
+ <span class="menu-icon">⚙️</span><span>الإعدادات</span>
+</div>
+
+</aside>
+
+<main class="main">
+
+<div class="topbar">
+ <div class="welcome">
+  <h1>مرحباً بك في وصلّي 👋</h1>
+  <p>نظام إدارة عمليات التوصيل</p>
+ </div>
+
+ <div class="admin-profile">
+  <div class="avatar">م</div>
+  <div>
+   <strong>مدير وصلّي</strong>
+   <small style="display:block;color:#777">الإدارة</small>
+  </div>
+ </div>
+</div>
+
+
+<!-- DASHBOARD -->
+
+<section id="dashboard" class="page active">
+
+<div class="stats">
+
+<div class="stat-card">
+ <div class="stat-icon">📦</div>
+ <h3 id="statOrders">0</h3>
+ <p>طلبات اليوم</p>
+</div>
+
+<div class="stat-card">
+ <div class="stat-icon">🛵</div>
+ <h3 id="statCouriers">0</h3>
+ <p>المندوبون</p>
+</div>
+
+<div class="stat-card">
+ <div class="stat-icon">🏪</div>
+ <h3 id="statShops">0</h3>
+ <p>المحلات المتعاونة</p>
+</div>
+
+<div class="stat-card">
+ <div class="stat-icon">💰</div>
+ <h3 id="statMoney">0</h3>
+ <p>أجور التوصيل</p>
+</div>
+
+</div>
+
+<div class="grid">
+
+<div class="card">
+
+<div class="card-header">
+ <h2>📦 آخر الطلبات</h2>
+ <button class="btn btn-primary" onclick="openOrderModal()">+ طلب جديد</button>
+</div>
+
+<div id="recentOrders"></div>
+
+</div>
+
+
+<div class="card">
+
+<div class="card-header">
+ <h2>🛵 المندوبون</h2>
+ <button class="btn btn-light" onclick="showPage('couriers')">عرض الكل</button>
+</div>
+
+<div id="dashboardCouriers"></div>
+
+</div>
+
+</div>
+
+<div class="card">
+
+<div class="card-header">
+ <h2>🏪 المحلات المتعاونة</h2>
+ <button class="btn btn-light" onclick="showPage('shops')">عرض الكل</button>
+</div>
+
+<div id="dashboardShops"></div>
+
+</div>
+
+</section>
+
+
+<!-- ORDERS -->
+
+<section id="orders" class="page">
+
+<div class="card">
+
+<div class="card-header">
+ <h2>📦 إدارة الطلبات</h2>
+ <button class="btn btn-primary" onclick="openOrderModal()">+ إضافة طلب</button>
+</div>
+
+<input class="search" id="orderSearch"
+ placeholder="🔎 ابحث برقم الطلب أو اسم الزبون أو المحل..."
+ oninput="renderOrders()">
+
+<div class="table-wrap">
+<table>
+<thead>
+<tr>
+<th>الطلب</th>
+<th>المحل</th>
+<th>الزبون</th>
+<th>المندوب</th>
+<th>الأجرة</th>
+<th>الحالة</th>
+</tr>
+</thead>
+<tbody id="ordersTable"></tbody>
+</table>
+</div>
+
+</div>
+
+</section>
+
+
+<!-- SHOPS -->
+
+<section id="shops" class="page">
+
+<div class="card">
+
+<div class="card-header">
+ <h2>🏪 المحلات المتعاونة</h2>
+ <button class="btn btn-primary" onclick="openShopModal()">+ إضافة محل</button>
+</div>
+
+<input class="search" placeholder="🔎 البحث عن محل..." oninput="filterShops(this.value)">
+
+<div id="shopsList"></div>
+
+</div>
+
+</section>
+
+
+<!-- COURIERS -->
+
+<section id="couriers" class="page">
+
+<div class="card">
+
+<div class="card-header">
+ <h2>🛵 إدارة المندوبين</h2>
+ <button class="btn btn-primary" onclick="openCourierModal()">+ إضافة مندوب</button>
+</div>
+
+<div id="couriersList"></div>
+
+</div>
+
+</section>
+
+
+<!-- MAP -->
+
+<section id="map" class="page">
+
+<div class="card">
+
+<div class="card-header">
+ <h2>🗺️ خريطة عمليات التوصيل</h2>
+ <span style="font-size:11px;color:#777">كربلاء المقدسة</span>
+</div>
+
+<div class="map">
+ <div class="map-title">خريطة كربلاء</div>
+ <div class="pin a">🏪</div>
+ <div class="pin b">🛵</div>
+ <div class="pin c">📍</div>
+</div>
+
+<div class="notice" style="margin-top:15px;margin-bottom:0">
+ سيتم ربط الخريطة الحقيقية ومواقع الطلبات والمندوبين في المرحلة القادمة.
+</div>
+
+</div>
+
+</section>
+
+
+<!-- ACCOUNTS -->
+
+<section id="accounts" class="page">
+
+<div class="card">
+
+<div class="card-header">
+ <h2>💰 الحسابات</h2>
+</div>
+
+<div class="stats">
+
+<div class="stat-card">
+ <div class="stat-icon">💵</div>
+ <h3 id="accountTotal">0</h3>
+ <p>إجمالي أجور التوصيل</p>
+</div>
+
+<div class="stat-card">
+ <div class="stat-icon">🛵</div>
+ <h3>75%</h3>
+ <p>حصة المندوب - إعداد مبدئي</p>
+</div>
+
+<div class="stat-card">
+ <div class="stat-icon">🏢</div>
+ <h3>25%</h3>
+ <p>حصة وصلّي - إعداد مبدئي</p>
+</div>
+
+</div>
+
+<div class="notice">
+ الحسابات حاليًا تجريبية. سنربطها لاحقًا بالطلبات والمندوبين وقواعد البيانات.
+</div>
+
+</div>
+
+</section>
+
+
+<!-- REPORTS -->
+
+<section id="reports" class="page">
+
+<div class="card">
+
+<div class="card-header">
+ <h2>📊 التقارير</h2>
+</div>
+
+<div class="empty">
+📊<br><br>
+التقارير اليومية والشهرية ستظهر هنا بعد ربط قاعدة البيانات.
+</div>
+
+</div>
+
+</section>
+
+
+<!-- SETTINGS -->
+
+<section id="settings" class="page">
+
+<div class="card">
+
+<div class="card-header">
+ <h2>⚙️ الإعدادات</h2>
+</div>
+
+<div class="notice">
+ هوية وصلّي الحالية: البنفسجي + التركوازي
+</div>
+
+<div class="form-grid">
+
+<div class="field">
+<label>اسم الشركة</label>
+<input value="وصلّي" id="companyName">
+</div>
+
+<div class="field">
+<label>منطقة العمل</label>
+<input value="كربلاء المقدسة">
+</div>
+
+<div class="field">
+<label>أجرة التوصيل الافتراضية</label>
+<input value="3000" type="number">
+</div>
+
+<div class="field">
+<label>رقم واتساب الطلبات</label>
+<input placeholder="أدخل الرقم لاحقًا">
+</div>
+
+</div>
+
+<div class="form-actions">
+<button class="btn btn-primary" onclick="alert('تم حفظ الإعدادات التجريبية')">
+ حفظ الإعدادات
+</button>
+</div>
+
+</div>
+
+</section>
+
+</main>
+</div>
+
+
+<!-- ORDER MODAL -->
+
+<div class="modal" id="orderModal">
+
+<div class="modal-box">
+
+<div class="modal-head">
+<h2>📦 إضافة طلب جديد</h2>
+<button class="close" onclick="closeModal('orderModal')">×</button>
+</div>
+
+<div class="form-grid">
+
+<div class="field">
+<label>اسم المحل</label>
+<input id="orderShop" placeholder="مثال: محل أحمد">
+</div>
+
+<div class="field">
+<label>اسم الزبون</label>
+<input id="orderCustomer" placeholder="اسم الزبون">
+</div>
+
+<div class="field">
+<label>رقم الهاتف</label>
+<input id="orderPhone" placeholder="07xxxxxxxxx">
+</div>
+
+<div class="field">
+<label>أجرة التوصيل</label>
+<input id="orderFee" type="number" value="3000">
+</div>
+
+<div class="field">
+<label>المندوب</label>
+<select id="orderCourier">
+<option value="">غير مسند</option>
+</select>
+</div>
+
+<div class="field">
+<label>الحالة</label>
+<select id="orderStatus">
+<option value="new">طلب جديد</option>
+<option value="road">بالطريق</option>
+<option value="done">تم التسليم</option>
+</select>
+</div>
+
+<div class="field" style="grid-column:1/-1">
+<label>عنوان التسليم</label>
+<input id="orderAddress" placeholder="عنوان الزبون">
+</div>
+
+</div>
+
+<div class="form-actions">
+<button class="btn btn-primary" onclick="addOrder()">حفظ الطلب</button>
+<button class="btn btn-light" onclick="closeModal('orderModal')">إلغاء</button>
+</div>
+
+</div>
+</div>
+
+
+<!-- SHOP MODAL -->
+
+<div class="modal" id="shopModal">
+
+<div class="modal-box">
+
+<div class="modal-head">
+<h2>🏪 إضافة محل</h2>
+<button class="close" onclick="closeModal('shopModal')">×</button>
+</div>
+
+<div class="field">
+<label>اسم المحل</label>
+<input id="shopName" placeholder="اسم المحل">
+</div>
+
+<div class="field" style="margin-top:12px">
+<label>رقم الهاتف</label>
+<input id="shopPhone" placeholder="رقم الهاتف">
+</div>
+
+<div class="form-actions">
+<button class="btn btn-primary" onclick="addShop()">إضافة المحل</button>
+<button class="btn btn-light" onclick="closeModal('shopModal')">إلغاء</button>
+</div>
+
+</div>
+</div>
+
+
+<!-- COURIER MODAL -->
+
+<div class="modal" id="courierModal">
+
+<div class="modal-box">
+
+<div class="modal-head">
+<h2>🛵 إضافة مندوب</h2>
+<button class="close" onclick="closeModal('courierModal')">×</button>
+</div>
+
+<div class="field">
+<label>اسم المندوب</label>
+<input id="courierName" placeholder="اسم المندوب">
+</div>
+
+<div class="field" style="margin-top:12px">
+<label>رقم الهاتف</label>
+<input id="courierPhone" placeholder="رقم الهاتف">
+</div>
+
+<div class="form-actions">
+<button class="btn btn-primary" onclick="addCourier()">إضافة المندوب</button>
+<button class="btn btn-light" onclick="closeModal('courierModal')">إلغاء</button>
+</div>
+
+</div>
+</div>
+
+
+<script>
+
+let orders = JSON.parse(localStorage.getItem("wasalli_orders") || "[]");
+
+let shops = JSON.parse(localStorage.getItem("wasalli_shops") || "[]");
+
+let couriers = JSON.parse(localStorage.getItem("wasalli_couriers") || "[]");
+
+
+if(couriers.length===0){
+ couriers=[
+  {name:"علي",phone:"",status:"متاح"},
+  {name:"حسن",phone:"",status:"متاح"},
+  {name:"عباس",phone:"",status:"خارج الخدمة"}
+ ];
+}
+
+if(shops.length===0){
+ shops=[
+  {name:"محل أحمد",phone:""},
+  {name:"متجر الولاية",phone:""},
+  {name:"حلويات كربلاء",phone:""}
+ ];
+}
+
+
+function save(){
+ localStorage.setItem("wasalli_orders",JSON.stringify(orders));
+ localStorage.setItem("wasalli_shops",JSON.stringify(shops));
+ localStorage.setItem("wasalli_couriers",JSON.stringify(couriers));
+}
+
+
+function showPage(page,element){
+
+ document.querySelectorAll(".page").forEach(p=>p.classList.remove("active"));
+
+ document.getElementById(page).classList.add("active");
+
+ document.querySelectorAll(".menu-item").forEach(x=>x.classList.remove("active"));
+
+ if(element) element.classList.add("active");
+
+ window.scrollTo({top:0,behavior:"smooth"});
+
+ renderAll();
+}
+
+
+function openOrderModal(){
+
+ const select=document.getElementById("orderCourier");
+
+ select.innerHTML='<option value="">غير مسند</option>';
+
+ couriers.forEach(c=>{
+  select.innerHTML+=`<option value="${c.name}">${c.name}</option>`;
+ });
+
+ document.getElementById("orderModal").classList.add("show");
+}
+
+
+function openShopModal(){
+ document.getElementById("shopModal").classList.add("show");
+}
+
+
+function openCourierModal(){
+ document.getElementById("courierModal").classList.add("show");
+}
+
+
+function closeModal(id){
+ document.getElementById(id).classList.remove("show");
+}
+
+
+function addOrder(){
+
+ const shop=document.getElementById("orderShop").value.trim();
+ const customer=document.getElementById("orderCustomer").value.trim();
+ const phone=document.getElementById("orderPhone").value.trim();
+ const fee=Number(document.getElementById("orderFee").value)||3000;
+ const courier=document.getElementById("orderCourier").value;
+ const status=document.getElementById("orderStatus").value;
+ const address=document.getElementById("orderAddress").value.trim();
+
+ if(!shop || !customer){
+  alert("اكتب اسم المحل واسم الزبون");
+  return;
+ }
+
+ const id=1000+orders.length+1;
+
+ orders.unshift({
+  id,
+  shop,
+  customer,
+  phone,
+  fee,
+  courier,
+  status,
+  address,
+  date:new Date().toLocaleDateString("ar-IQ")
+ });
+
+ save();
+
+ closeModal("orderModal");
+
+ document.querySelectorAll("#orderModal input").forEach(x=>x.value="");
+
+ document.getElementById("orderFee").value=3000;
+
+ renderAll();
+
+ alert("تمت إضافة الطلب بنجاح ✅");
+}
+
+
+function addShop(){
+
+ const name=document.getElementById("shopName").value.trim();
+ const phone=document.getElementById("shopPhone").value.trim();
+
+ if(!name){
+  alert("اكتب اسم المحل");
+  return;
+ }
+
+ shops.push({name,phone});
+
+ save();
+
+ document.getElementById("shopName").value="";
+ document.getElementById("shopPhone").value="";
+
+ closeModal("shopModal");
+
+ renderAll();
+
+ alert("تمت إضافة المحل ✅");
+}
+
+
+function addCourier(){
+
+ const name=document.getElementById("courierName").value.trim();
+ const phone=document.getElementById("courierPhone").value.trim();
+
+ if(!name){
+  alert("اكتب اسم المندوب");
+  return;
+ }
+
+ couriers.push({
+  name,
+  phone,
+  status:"متاح"
+ });
+
+ save();
+
+ document.getElementById("courierName").value="";
+ document.getElementById("courierPhone").value="";
+
+ closeModal("courierModal");
+
+ renderAll();
+
+ alert("تمت إضافة المندوب ✅");
+}
+
+
+function statusText(status){
+
+ if(status==="new") return '<span class="badge badge-new">طلب جديد</span>';
+
+ if(status==="road") return '<span class="badge badge-road">بالطريق</span>';
+
+ return '<span class="badge badge-done">تم التسليم</span>';
+}
+
+
+function renderOrders(){
+
+ const tbody=document.getElementById("ordersTable");
+
+ if(!tbody)return;
+
+ const search=(document.getElementById("orderSearch")?.value||"").toLowerCase();
+
+ const filtered=orders.filter(o=>
+  String(o.id).includes(search) ||
+  (o.customer||"").toLowerCase().includes(search) ||
+  (o.shop||"").toLowerCase().includes(search)
+ );
+
+ if(filtered.length===0){
+  tbody.innerHTML=`
+   <tr>
+    <td colspan="6">
+     <div class="empty">لا توجد طلبات حالياً</div>
+    </td>
+   </tr>
+  `;
+  return;
+ }
+
+ tbody.innerHTML=filtered.map(o=>`
+  <tr>
+   <td><strong>#${o.id}</strong></td>
+   <td>${o.shop}</td>
+   <td>
+    <strong>${o.customer}</strong>
+    <small style="display:block;color:#777">${o.phone||""}</small>
+   </td>
+   <td>${o.courier||"غير مسند"}</td>
+   <td>${Number(o.fee||0).toLocaleString("ar-IQ")} د.ع</td>
+   <td>${statusText(o.status)}</td>
+  </tr>
+ `).join("");
+}
+
+
+function renderRecent(){
+
+ const box=document.getElementById("recentOrders");
+
+ if(!box)return;
+
+ const recent=orders.slice(0,5);
+
+ if(recent.length===0){
+  box.innerHTML='<div class="empty">لا توجد طلبات اليوم</div>';
+  return;
+ }
+
+ box.innerHTML=recent.map(o=>`
+  <div class="activity">
+   <div>
+    <strong>#${o.id}</strong>
+    <span style="margin-right:8px">${o.customer}</span>
+    <small style="display:block;color:#777;margin-top:4px">
+     ${o.shop}
+    </small>
+   </div>
+
+   <div style="text-align:left">
+    ${statusText(o.status)}
+    <small style="display:block;margin-top:5px;color:#777">
+     ${Number(o.fee||0).toLocaleString("ar-IQ")} د.ع
+    </small>
+   </div>
+  </div>
+ `).join("");
+}
+
+
+function renderCouriers(){
+
+ const box=document.getElementById("couriersList");
+ const dash=document.getElementById("dashboardCouriers");
+
+ if(!box && !dash)return;
+
+ const html=couriers.length
+ ? couriers.map((c,index)=>`
+   <div class="courier">
+
+    <div class="person">
+     <div class="person-avatar">
+      ${c.name.charAt(0)}
+     </div>
+
+     <div class="person">
+      <div>
+       <h4>${c.name}</h4>
+       <p>${c.phone||"لا يوجد رقم هاتف"}</p>
+      </div>
+     </div>
+    </div>
+
+    <div>
+     <span class="badge ${c.status==="متاح"?"badge-done":"badge-off"}">
+      ${c.status||"متاح"}
+     </span>
+    </div>
+
+   </div>
+  `).join("")
+ : '<div class="empty">لا يوجد مندوبون</div>';
+
+ if(box)box.innerHTML=html;
+
+ if(dash){
+  dash.innerHTML=couriers.slice(0,4).map(c=>`
+   <div class="courier">
+
+    <div class="person">
+     <div class="person-avatar">
+      ${c.name.charAt(0)}
+     </div>
+
+     <div>
+      <h4>${c.name}</h4>
+      <p>${c.phone||"بدون رقم"}</p>
+     </div>
+    </div>
+
+    <span class="badge ${c.status==="متاح"?"badge-done":"badge-off"}">
+     ${c.status||"متاح"}
+    </span>
+
+   </div>
+  `).join("");
+ }
+}
+
+
+function renderShops(){
+
+ const box=document.getElementById("shopsList");
+ const dash=document.getElementById("dashboardShops");
+
+ if(!box && !dash)return;
+
+ const html=shops.length
+ ? shops.map(s=>`
+   <div class="shop-row">
+
+    <div class="person">
+     <div class="person-avatar">🏪</div>
+
+     <div>
+      <h4>${s.name}</h4>
+      <p>${s.phone||"لا يوجد رقم هاتف"}</p>
+     </div>
+    </div>
+
+    <span class="badge badge-done">
+     متعاون
+    </span>
+
+   </div>
+  `).join("")
+ : '<div class="empty">لا توجد محلات</div>';
+
+ if(box)box.innerHTML=html;
+
+ if(dash){
+  dash.innerHTML=shops.slice(0,5).map(s=>`
+   <div class="shop-row">
+
+    <div class="person">
+     <div class="person-avatar">🏪</div>
+
+     <div>
+      <h4>${s.name}</h4>
+      <p>${s.phone||"بدون رقم"}</p>
+     </div>
+    </div>
+
+    <span class="badge badge-done">
+     متعاون
+    </span>
+
+   </div>
+  `).join("");
+ }
+}
+
+
+function filterShops(value){
+
+ const box=document.getElementById("shopsList");
+
+ if(!box)return;
+
+ const search=(value||"").toLowerCase().trim();
+
+ const filtered=shops.filter(s=>
+  (s.name||"").toLowerCase().includes(search) ||
+  (s.phone||"").includes(search)
+ );
+
+ if(filtered.length===0){
+  box.innerHTML='<div class="empty">لا توجد نتائج</div>';
+  return;
+ }
+
+ box.innerHTML=filtered.map(s=>`
+  <div class="shop-row">
+
+   <div class="person">
+
+    <div class="person-avatar">🏪</div>
+
+    <div>
+     <h4>${s.name}</h4>
+     <p>${s.phone||"لا يوجد رقم هاتف"}</p>
+    </div>
+
+   </div>
+
+   <span class="badge badge-done">
+    متعاون
+   </span>
+
+  </div>
+ `).join("");
+}
+
+
+function renderStats(){
+
+ const today=new Date().toLocaleDateString("ar-IQ");
+
+ const todayOrders=orders.filter(o=>o.date===today);
+
+ const totalFees=todayOrders.reduce(
+  (sum,o)=>sum+Number(o.fee||0),
+  0
+ );
+
+ const statOrders=document.getElementById("statOrders");
+ const statCouriers=document.getElementById("statCouriers");
+ const statShops=document.getElementById("statShops");
+ const statMoney=document.getElementById("statMoney");
+
+ if(statOrders)
+  statOrders.textContent=todayOrders.length;
+
+ if(statCouriers)
+  statCouriers.textContent=couriers.length;
+
+ if(statShops)
+  statShops.textContent=shops.length;
+
+ if(statMoney)
+  statMoney.textContent=
+   totalFees.toLocaleString("ar-IQ")+" د.ع";
+
+ const accountTotal=document.getElementById("accountTotal");
+
+ if(accountTotal){
+
+  const allFees=orders.reduce(
+   (sum,o)=>sum+Number(o.fee||0),
+   0
+  );
+
+  accountTotal.textContent=
+   allFees.toLocaleString("ar-IQ")+" د.ع";
+ }
+}
+
+
+function renderAll(){
+
+ renderStats();
+ renderRecent();
+ renderOrders();
+ renderCouriers();
+ renderShops();
+
+}
+
+
+document.addEventListener("click",function(e){
+
+ if(e.target.classList.contains("modal")){
+
+  e.target.classList.remove("show");
+
+ }
+
+});
+
+
+window.addEventListener("load",function(){
+
+ save();
+
+ renderAll();
+
+});
+
+
+</script>
+
+</body>
+</html>
