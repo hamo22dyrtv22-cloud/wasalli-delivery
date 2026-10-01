@@ -1,0 +1,884 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>وصلّي | لوحة التحكم</title>
+
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: Arial, Tahoma, sans-serif;
+      background: #f5f3f8;
+      color: #241d2f;
+    }
+
+    /* =========================
+       ألوان هوية وصلّي
+    ========================== */
+
+    :root {
+      --purple: #6b2fb8;
+      --purple-dark: #4d2088;
+      --purple-light: #eee4fa;
+      --turquoise: #20c8c3;
+      --white: #ffffff;
+      --text: #241d2f;
+      --muted: #77727f;
+      --border: #e7e1ed;
+      --success: #20a36a;
+      --warning: #e7a51b;
+      --danger: #d94b5b;
+    }
+
+    /* =========================
+       الصفحة
+    ========================== */
+
+    .app {
+      display: flex;
+      min-height: 100vh;
+    }
+
+    /* =========================
+       القائمة الجانبية
+    ========================== */
+
+    .sidebar {
+      width: 250px;
+      background: var(--purple);
+      color: white;
+      padding: 25px 16px;
+      position: fixed;
+      right: 0;
+      top: 0;
+      bottom: 0;
+      z-index: 10;
+    }
+
+    .logo {
+      text-align: center;
+      margin-bottom: 35px;
+    }
+
+    .logo-symbol {
+      width: 58px;
+      height: 58px;
+      margin: auto;
+      border-radius: 18px;
+      background: white;
+      color: var(--purple);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 27px;
+      font-weight: bold;
+      box-shadow: 0 8px 20px rgba(0,0,0,.12);
+    }
+
+    .logo-name {
+      font-size: 29px;
+      font-weight: bold;
+      margin-top: 10px;
+    }
+
+    .logo-name span {
+      color: var(--turquoise);
+    }
+
+    .logo-subtitle {
+      font-size: 11px;
+      opacity: .75;
+      margin-top: 4px;
+    }
+
+    .menu-title {
+      font-size: 11px;
+      opacity: .6;
+      margin: 20px 12px 10px;
+    }
+
+    .menu-item {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 13px 14px;
+      border-radius: 12px;
+      margin-bottom: 5px;
+      cursor: pointer;
+      transition: .2s;
+      font-size: 14px;
+    }
+
+    .menu-item:hover,
+    .menu-item.active {
+      background: rgba(255,255,255,.14);
+    }
+
+    .menu-icon {
+      width: 23px;
+      text-align: center;
+      font-size: 18px;
+    }
+
+    /* =========================
+       المحتوى
+    ========================== */
+
+    .main {
+      width: calc(100% - 250px);
+      margin-right: 250px;
+      padding: 28px;
+    }
+
+    .topbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 25px;
+    }
+
+    .welcome h1 {
+      font-size: 25px;
+      margin-bottom: 6px;
+    }
+
+    .welcome p {
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    .admin-profile {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      background: white;
+      padding: 9px 14px;
+      border-radius: 14px;
+      border: 1px solid var(--border);
+    }
+
+    .avatar {
+      width: 38px;
+      height: 38px;
+      border-radius: 50%;
+      background: var(--purple-light);
+      color: var(--purple);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: bold;
+    }
+
+    /* =========================
+       الإحصائيات
+    ========================== */
+
+    .stats {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 16px;
+      margin-bottom: 22px;
+    }
+
+    .stat-card {
+      background: white;
+      border: 1px solid var(--border);
+      border-radius: 18px;
+      padding: 20px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .stat-card::after {
+      content: "";
+      position: absolute;
+      width: 65px;
+      height: 65px;
+      border-radius: 50%;
+      background: var(--purple-light);
+      left: -20px;
+      bottom: -20px;
+    }
+
+    .stat-icon {
+      width: 43px;
+      height: 43px;
+      border-radius: 13px;
+      background: var(--purple-light);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 21px;
+      margin-bottom: 15px;
+    }
+
+    .stat-card h3 {
+      font-size: 28px;
+      margin-bottom: 5px;
+    }
+
+    .stat-card p {
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    /* =========================
+       المحتوى الرئيسي
+    ========================== */
+
+    .grid {
+      display: grid;
+      grid-template-columns: 1.5fr 1fr;
+      gap: 20px;
+    }
+
+    .card {
+      background: white;
+      border: 1px solid var(--border);
+      border-radius: 18px;
+      padding: 20px;
+      margin-bottom: 20px;
+    }
+
+    .card-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 18px;
+    }
+
+    .card-header h2 {
+      font-size: 17px;
+    }
+
+    .view-all {
+      color: var(--purple);
+      font-size: 12px;
+      cursor: pointer;
+    }
+
+    /* =========================
+       الطلبات
+    ========================== */
+
+    .order {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 14px 0;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .order:last-child {
+      border-bottom: 0;
+    }
+
+    .order-info {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .order-icon {
+      width: 43px;
+      height: 43px;
+      border-radius: 12px;
+      background: var(--purple-light);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .order-info h4 {
+      font-size: 13px;
+      margin-bottom: 5px;
+    }
+
+    .order-info p {
+      font-size: 11px;
+      color: var(--muted);
+    }
+
+    .status {
+      padding: 6px 10px;
+      border-radius: 20px;
+      font-size: 10px;
+      white-space: nowrap;
+    }
+
+    .status.new {
+      background: #fff3d8;
+      color: #a66a00;
+    }
+
+    .status.delivery {
+      background: #e1f5f5;
+      color: #168887;
+    }
+
+    .status.done {
+      background: #e1f6eb;
+      color: #18774d;
+    }
+
+    /* =========================
+       المندوبون
+    ========================== */
+
+    .courier {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 13px 0;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .courier:last-child {
+      border-bottom: 0;
+    }
+
+    .courier-info {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .courier-avatar {
+      width: 40px;
+      height: 40px;
+      border-radius: 12px;
+      background: var(--purple-light);
+      color: var(--purple);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: bold;
+    }
+
+    .courier-info h4 {
+      font-size: 13px;
+      margin-bottom: 4px;
+    }
+
+    .courier-info p {
+      font-size: 10px;
+      color: var(--muted);
+    }
+
+    .online {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      font-size: 10px;
+      color: var(--success);
+    }
+
+    .online-dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: var(--success);
+    }
+
+    /* =========================
+       الخريطة
+    ========================== */
+
+    .map {
+      height: 270px;
+      background:
+        linear-gradient(45deg, #ece9ef 25%, transparent 25%),
+        linear-gradient(-45deg, #ece9ef 25%, transparent 25%),
+        linear-gradient(45deg, transparent 75%, #ece9ef 75%),
+        linear-gradient(-45deg, transparent 75%, #ece9ef 75%);
+      background-size: 42px 42px;
+      background-position: 0 0, 0 21px, 21px -21px, -21px 0;
+      border-radius: 15px;
+      position: relative;
+      overflow: hidden;
+      border: 1px solid var(--border);
+    }
+
+    .map::after {
+      content: "خريطة كربلاء";
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      transform: translate(-50%,-50%);
+      color: #aaa;
+      font-size: 14px;
+      font-weight: bold;
+    }
+
+    .pin {
+      position: absolute;
+      z-index: 2;
+      font-size: 25px;
+    }
+
+    .pin.one {
+      top: 30%;
+      right: 28%;
+    }
+
+    .pin.two {
+      top: 58%;
+      right: 55%;
+    }
+
+    .pin.three {
+      top: 42%;
+      right: 72%;
+    }
+
+    /* =========================
+       المحلات
+    ========================== */
+
+    .shop-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 11px 0;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .shop-name {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .shop-icon {
+      width: 38px;
+      height: 38px;
+      background: #e5f8f7;
+      border-radius: 11px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    /* =========================
+       الموبايل
+    ========================== */
+
+    @media (max-width: 900px) {
+
+      .sidebar {
+        width: 75px;
+        padding: 20px 9px;
+      }
+
+      .logo-name,
+      .logo-subtitle,
+      .menu-title,
+      .menu-item span:not(.menu-icon) {
+        display: none;
+      }
+
+      .logo-symbol {
+        width: 50px;
+        height: 50px;
+      }
+
+      .menu-item {
+        justify-content: center;
+        padding: 13px;
+      }
+
+      .main {
+        width: calc(100% - 75px);
+        margin-right: 75px;
+        padding: 18px;
+      }
+
+      .stats {
+        grid-template-columns: repeat(2, 1fr);
+      }
+
+      .grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    @media (max-width: 600px) {
+
+      .topbar {
+        align-items: flex-start;
+      }
+
+      .admin-profile {
+        padding: 7px;
+      }
+
+      .admin-profile div:not(.avatar) {
+        display: none;
+      }
+
+      .welcome h1 {
+        font-size: 20px;
+      }
+
+      .stats {
+        grid-template-columns: 1fr 1fr;
+        gap: 10px;
+      }
+
+      .stat-card {
+        padding: 15px;
+      }
+
+      .stat-card h3 {
+        font-size: 23px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+<div class="app">
+
+  <!-- القائمة الجانبية -->
+  <aside class="sidebar">
+
+    <div class="logo">
+      <div class="logo-symbol">و</div>
+
+      <div class="logo-name">
+        وصل<span>ّ</span>ي
+      </div>
+
+      <div class="logo-subtitle">
+        لخدمات التوصيل
+      </div>
+    </div>
+
+    <div class="menu-title">الرئيسية</div>
+
+    <div class="menu-item active">
+      <span class="menu-icon">🏠</span>
+      <span>لوحة التحكم</span>
+    </div>
+
+    <div class="menu-item">
+      <span class="menu-icon">📦</span>
+      <span>الطلبات</span>
+    </div>
+
+    <div class="menu-item">
+      <span class="menu-icon">🏪</span>
+      <span>المحلات</span>
+    </div>
+
+    <div class="menu-item">
+      <span class="menu-icon">🚚</span>
+      <span>المندوبون</span>
+    </div>
+
+    <div class="menu-item">
+      <span class="menu-icon">🗺️</span>
+      <span>الخريطة</span>
+    </div>
+
+    <div class="menu-title">الإدارة</div>
+
+    <div class="menu-item">
+      <span class="menu-icon">💰</span>
+      <span>الحسابات</span>
+    </div>
+
+    <div class="menu-item">
+      <span class="menu-icon">📊</span>
+      <span>التقارير</span>
+    </div>
+
+    <div class="menu-item">
+      <span class="menu-icon">⚙️</span>
+      <span>الإعدادات</span>
+    </div>
+
+  </aside>
+
+
+  <!-- المحتوى -->
+  <main class="main">
+
+    <!-- العنوان -->
+    <div class="topbar">
+
+      <div class="welcome">
+        <h1>مرحباً بك في وصلّي 👋</h1>
+        <p>لوحة إدارة عمليات التوصيل</p>
+      </div>
+
+      <div class="admin-profile">
+        <div class="avatar">م</div>
+
+        <div>
+          <strong>مدير وصلّي</strong>
+          <small style="display:block;color:#777;">الإدارة</small>
+        </div>
+      </div>
+
+    </div>
+
+
+    <!-- الإحصائيات -->
+    <section class="stats">
+
+      <div class="stat-card">
+        <div class="stat-icon">📦</div>
+        <h3>27</h3>
+        <p>طلبات اليوم</p>
+      </div>
+
+      <div class="stat-card">
+        <div class="stat-icon">🚚</div>
+        <h3>8</h3>
+        <p>المندوبون</p>
+      </div>
+
+      <div class="stat-card">
+        <div class="stat-icon">🏪</div>
+        <h3>34</h3>
+        <p>المحلات المتعاونة</p>
+      </div>
+
+      <div class="stat-card">
+        <div class="stat-icon">💰</div>
+        <h3>81,000</h3>
+        <p>أجور التوصيل اليوم</p>
+      </div>
+
+    </section>
+
+
+    <!-- الأعمدة -->
+    <div class="grid">
+
+      <!-- الطلبات -->
+      <div class="card">
+
+        <div class="card-header">
+          <h2>📦 آخر الطلبات</h2>
+          <span class="view-all">عرض الكل</span>
+        </div>
+
+
+        <div class="order">
+
+          <div class="order-info">
+            <div class="order-icon">📦</div>
+
+            <div>
+              <h4>طلب #1025</h4>
+              <p>محل أحمد • محمد باقر</p>
+            </div>
+          </div>
+
+          <span class="status new">طلب جديد</span>
+
+        </div>
+
+
+        <div class="order">
+
+          <div class="order-info">
+            <div class="order-icon">🚚</div>
+
+            <div>
+              <h4>طلب #1024</h4>
+              <p>متجر الولاية • حسين</p>
+            </div>
+          </div>
+
+          <span class="status delivery">بالطريق</span>
+
+        </div>
+
+
+        <div class="order">
+
+          <div class="order-info">
+            <div class="order-icon">✅</div>
+
+            <div>
+              <h4>طلب #1023</h4>
+              <p>حلويات كربلاء • عباس</p>
+            </div>
+          </div>
+
+          <span class="status done">تم التسليم</span>
+
+        </div>
+
+      </div>
+
+
+      <!-- المندوبون -->
+      <div class="card">
+
+        <div class="card-header">
+          <h2>🚚 المندوبون</h2>
+          <span class="view-all">عرض الكل</span>
+        </div>
+
+
+        <div class="courier">
+
+          <div class="courier-info">
+            <div class="courier-avatar">ع</div>
+
+            <div>
+              <h4>علي</h4>
+              <p>8 طلبات اليوم</p>
+            </div>
+          </div>
+
+          <div class="online">
+            <span class="online-dot"></span>
+            متاح
+          </div>
+
+        </div>
+
+
+        <div class="courier">
+
+          <div class="courier-info">
+            <div class="courier-avatar">ح</div>
+
+            <div>
+              <h4>حسن</h4>
+              <p>6 طلبات اليوم</p>
+            </div>
+          </div>
+
+          <div class="online">
+            <span class="online-dot"></span>
+            متاح
+          </div>
+
+        </div>
+
+
+        <div class="courier">
+
+          <div class="courier-info">
+            <div class="courier-avatar">ع</div>
+
+            <div>
+              <h4>عباس</h4>
+              <p>4 طلبات اليوم</p>
+            </div>
+          </div>
+
+          <div style="font-size:10px;color:#999;">
+            خارج الخدمة
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
+
+
+    <!-- الخريطة -->
+    <div class="card">
+
+      <div class="card-header">
+        <h2>🗺️ خريطة عمليات التوصيل</h2>
+        <span class="view-all">فتح الخريطة</span>
+      </div>
+
+      <div class="map">
+
+        <div class="pin one">📍</div>
+        <div class="pin two">🚚</div>
+        <div class="pin three">🏪</div>
+
+      </div>
+
+    </div>
+
+
+    <!-- المحلات -->
+    <div class="card">
+
+      <div class="card-header">
+        <h2>🏪 المحلات المتعاونة</h2>
+        <span class="view-all">عرض الكل</span>
+      </div>
+
+
+      <div class="shop-row">
+
+        <div class="shop-name">
+          <div class="shop-icon">🏪</div>
+
+          <div>
+            <strong style="font-size:13px;">محل أحمد</strong>
+            <p style="font-size:10px;color:#777;">
+              12 طلب اليوم
+            </p>
+          </div>
+        </div>
+
+        <span class="status done">فعال</span>
+
+      </div>
+
+
+      <div class="shop-row">
+
+        <div class="shop-name">
+          <div class="shop-icon">🛍️</div>
+
+          <div>
+            <strong style="font-size:13px;">متجر الولاية</strong>
+            <p style="font-size:10px;color:#777;">
+              8 طلبات اليوم
+            </p>
+          </div>
+        </div>
+
+        <span class="status done">فعال</span>
+
+      </div>
+
+
+      <div class="shop-row">
+
+        <div class="shop-name">
+          <div class="shop-icon">🍰</div>
+
+          <div>
+            <strong style="font-size:13px;">حلويات كربلاء</strong>
+            <p style="font-size:10px;color:#777;">
+              6 طلبات اليوم
+            </p>
+          </div>
+        </div>
+
+        <span class="status done">فعال</span>
+
+      </div>
+
+    </div>
+
+  </main>
+
+</div>
+
+</body>
+</html>
