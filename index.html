@@ -516,13 +516,14 @@ th{
  <div class="welcome">
   <h1>مرحباً بك في وصلّي 👋</h1>
   <p>نظام إدارة عمليات التوصيل</p>
+
  </div>
  
 <div class="admin-profile">
 
   <div class="avatar">م</div>
 
-  <div>
+  <div class="admin-info">
     <strong>مدير النظام</strong>
     <small style="display:block;color:#777">الإدارة</small>
   </div>
@@ -532,18 +533,19 @@ th{
       border:0;
       background:#fbe8eb;
       color:#d94b5b;
-      padding:9px 12px;
-      border-radius:10px;
+      padding:7px 10px;
+      border-radius:8px;
       cursor:pointer;
       font-family:inherit;
+      margin-right:10px;
     ">
     خروج
   </button>
 
 </div>
-  
- <!-- DASHBOARD -->
 
+<!-- DASHBOARD -->
+  
 <section id="dashboard" class="page active">
 
 <div class="stats">
@@ -1522,5 +1524,11 @@ async function checkWasalliLogin() {
 
 checkWasalliLogin();
  </script>
+ <script>
+async function logoutWasalli() {
+  await supabaseClient.auth.signOut();
+  window.location.reload();
+}
+</script>
 </body>
 </html>
