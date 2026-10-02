@@ -442,7 +442,26 @@ th{
 </head>
 
 <body>
+<div id="loginScreen" style="display:none;min-height:100vh;align-items:center;justify-content:center;background:#6b2fb8;padding:20px;">
+  <div style="background:white;width:100%;max-width:400px;padding:30px;border-radius:20px;text-align:center;">
 
+    <h2 style="color:#6b2fb8;margin-bottom:20px;">تسجيل الدخول - وصلّي</h2>
+
+    <input id="loginEmail" type="email" placeholder="البريد الإلكتروني"
+      style="width:100%;padding:14px;margin-bottom:10px;border:1px solid #ddd;border-radius:10px;box-sizing:border-box;">
+
+    <input id="loginPassword" type="password" placeholder="كلمة المرور"
+      style="width:100%;padding:14px;margin-bottom:15px;border:1px solid #ddd;border-radius:10px;box-sizing:border-box;">
+
+    <button onclick="loginWasalli()"
+      style="width:100%;padding:14px;background:#20c8c3;color:white;border:0;border-radius:10px;font-size:16px;cursor:pointer;">
+      دخول
+    </button>
+
+    <p id="loginError" style="color:#d94b5b;margin-top:15px;"></p>
+
+  </div>
+</div>
 <div class="app">
 
 <aside class="sidebar">
@@ -1425,5 +1444,69 @@ const supabaseClient = supabase.createClient(
 
 console.log("Wasalli connected to Supabase");
 </script>
+ <script>
+async function loginWasalli() {
+  const email = document.getElementById("loginEmail").value.trim();
+  const password = document.getElementById("loginPassword").value;
+
+  const errorBox = document.getElementById("loginError");
+  errorBox.textContent = "";
+
+  if (!email || !password) {
+    errorBox.textContent = "اكتب البريد الإلكتروني وكلمة المرور";
+    return;
+  }
+
+  const { data, error } = await supabaseClient.auth.signInWithPassword({
+    email: email,
+    password: password
+  });
+
+  if (error) {
+    errorBox.textContent = "البريد الإلكتروني أو كلمة المرور غير صحيحة";
+    return;
+  }
+
+  const { data: profile, error: profileError } = await supabaseClient
+    .from("profiles")
+    .select("role, is_active")
+    .eq("id", data.user.id)
+    .single();
+
+  if (profileError || !profile || profile.role !== "admin" || !profile.is_active) {
+    await supabaseClient.auth.signOut();
+    errorBox.textContent = "هذا الحساب ليس حساب إدارة";
+    return;
+  }
+
+  document.getElementById("loginScreen").style.display = "none";
+  document.querySelector(".app").style.display = "flex";
+}
+ </script>
+ <script>
+async function checkWasalliLogin() {
+  const { data: { session } } = await supabaseClient.auth.getSession();
+
+  if (!session) {
+    document.getElementById("loginScreen").style.display = "flex";
+    document.querySelector(".app").style.display = "none";
+    return;
+  }
+
+  const { data: profile } = await supabaseClient
+    .from("profiles")
+    .select("role, is_active")
+    .eq("id", session.user.id)
+    .single();
+
+  if (!profile || profile.role !== "admin" || !profile.is_active) {
+    await supabaseClient.auth.signOut();
+    document.getElementById("loginScreen").style.display = "flex";
+    document.querySelector(".app").style.display = "none";
+  }
+}
+
+checkWasalliLogin();
+ </script>
 </body>
 </html>
