@@ -945,12 +945,52 @@ th{
 
 <script>
 
-let orders = JSON.parse(localStorage.getItem("wasalli_orders") || "[]");
+let orders = [];
+let shops = [];
+let couriers = [];
 
-let shops = JSON.parse(localStorage.getItem("wasalli_shops") || "[]");
+async function loadWasalliData(){
 
-let couriers = JSON.parse(localStorage.getItem("wasalli_couriers") || "[]");
+  const { data: ordersData, error: ordersError } =
+    await supabaseClient
+      .from("orders")
+      .select("*")
+      .order("created_at", { ascending: false });
 
+  if(ordersError){
+    console.error("خطأ في تحميل الطلبات:", ordersError);
+  } else {
+    orders = ordersData || [];
+  }
+
+  const { data: shopsData, error: shopsError } =
+    await supabaseClient
+      .from("shops")
+      .select("*")
+      .order("created_at", { ascending: false });
+
+  if(shopsError){
+    console.error("خطأ في تحميل المحلات:", shopsError);
+  } else {
+    shops = shopsData || [];
+  }
+
+  const { data: couriersData, error: couriersError } =
+    await supabaseClient
+      .from("couriers")
+      .select("*")
+      .order("created_at", { ascending: false });
+
+  if(couriersError){
+    console.error("خطأ في تحميل المندوبين:", couriersError);
+  } else {
+    couriers = couriersData || [];
+  }
+
+  renderAll();
+}
+
+loadWasalliData();
 
 if(couriers.length===0){
  couriers=[
@@ -967,7 +1007,6 @@ if(shops.length===0){
   {name:"حلويات كربلاء",phone:""}
  ];
 }
-
 
 function save(){
  localStorage.setItem("wasalli_orders",JSON.stringify(orders));
@@ -1424,17 +1463,8 @@ document.addEventListener("click",function(e){
 });
 
 
-window.addEventListener("load",function(){
-
- save();
-
- renderAll();
-
-});
-
-
 </script>
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+</script>
 
 <script>
 const SUPABASE_URL = "https://xagwkneegevbllexhvzz.supabase.co";
