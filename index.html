@@ -1060,49 +1060,75 @@ function closeModal(id){
 }
 
 
-function addOrder(){
+async function addOrder(){
 
- const shop=document.getElementById("orderShop").value.trim();
- const customer=document.getElementById("orderCustomer").value.trim();
- const phone=document.getElementById("orderPhone").value.trim();
- const fee=Number(document.getElementById("orderFee").value)||3000;
- const courier=document.getElementById("orderCourier").value;
- const status=document.getElementById("orderStatus").value;
- const address=document.getElementById("orderAddress").value.trim();
+  const shop = document.getElementById("orderShop").value.trim();
+  const customer = document.getElementById("orderCustomer").value.trim();
+  const phone = document.getElementById("orderPhone").value.trim();
+  const fee = Number(document.getElementById("orderFee").value) || 3000;
+  const courier = document.getElementById("orderCourier").value;
+  const status = document.getElementById("orderStatus").value;
+  const address = document.getElementById("orderAddress").value.trim();
 
- if(!shop || !customer){
-  alert("اكتب اسم المحل واسم الزبون");
-  return;
- }
+  if(!shop || !customer){
+    alert("اكتب اسم المحل واسم الزبون");
+    return;
+  }
 
- const id=1000+orders.length+1;
+  const button = document.querySelector(
+    '#orderModal button[onclick="addOrder()"]'
+  );
 
- orders.unshift({
-  id,
-  shop,
-  customer,
-  phone,
-  fee,
-  courier,
-  status,
-  address,
-  date:new Date().toLocaleDateString("ar-IQ")
- });
+  if(button){
+    button.disabled = true;
+    button.textContent = "جارٍ الحفظ...";
+  }
 
- save();
+  try {
+    const { data, error } = await supabaseClient
+      .from("orders")
+      .insert([{
+        shop: shop,
+        customer: customer,
+        phone: phone,
+        fee: fee,
+        courier: courier || null,
+        status: status,
+        address: address
+      }])
+      .select()
+      .single();
 
- closeModal("orderModal");
+    if(error){
+      console.error("Supabase order error:", error);
+      alert("تعذر حفظ الطلب. تأكد من أعمدة الجدول وصلاحيات قاعدة البيانات.");
+      return;
+    }
 
- document.querySelectorAll("#orderModal input").forEach(x=>x.value="");
+    orders.unshift(data);
 
- document.getElementById("orderFee").value=3000;
+    closeModal("orderModal");
 
- renderAll();
+    document.querySelectorAll("#orderModal input").forEach(x => {
+      x.value = "";
+    });
 
- alert("تمت إضافة الطلب بنجاح ✅");
+    document.getElementById("orderFee").value = 3000;
+
+    renderAll();
+
+    alert("تم حفظ الطلب بنجاح ✅");
+
+  } catch(error) {
+    console.error(error);
+    alert("حدث خطأ أثناء حفظ الطلب.");
+  } finally {
+    if(button){
+      button.disabled = false;
+      button.textContent = "إضافة طلب";
+    }
+  }
 }
-
-
 function addShop(){
 
  const name=document.getElementById("shopName").value.trim();
